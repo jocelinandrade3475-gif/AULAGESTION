@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AulaGestion - Sistema de Gestión de Alumnos (SCRUM)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">🎓 AulaGestion <span class="badge-header">SCRUM</span></div>
+    <nav>
+      <button class="nav-btn active" onclick="mostrarSeccion('sistema', this)">Sistema Implementado</button>
+      <button class="nav-btn" onclick="mostrarSeccion('actividades', this)">Actividades del Curso</button>
+      <button class="nav-btn" onclick="mostrarSeccion('modificaciones', this)">Reporte de Modificaciones</button>
+      <button class="nav-btn" onclick="mostrarSeccion('codigo', this)">Código Fuente (.ZIP)</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- SECCIÓN 1: SISTEMA IMPLEMENTADO (GESTIÓN DE ALUMNOS) -->
+    <section id="sistema" class="seccion activa">
+      <div class="section-header">
+        <div>
+          <h1>Control Escolar y Seguimiento de Alumnos</h1>
+          <p>Registro, búsqueda, actualización de estatus académico y control de calificaciones.</p>
+        </div>
+        <div class="stats" id="contador-alumnos">Total: 0 alumnos</div>
+      </div>
+
+      <form id="form-alumno" class="student-form">
+        <input type="text" id="matricula" placeholder="Matrícula (ej. A01234)" required>
+        <input type="text" id="nombre" placeholder="Nombre completo del alumno..." required>
+        <select id="grupo" required>
+          <option value="">Seleccionar Grupo...</option>
+          <option value="1° A - Ingeniería">1° A - Ingeniería</option>
+          <option value="2° B - Sistemas">2° B - Sistemas</option>
+          <option value="3° A - Desarrollo Web">3° A - Desarrollo Web</option>
+        </select>
+        <input type="number" id="promedio" placeholder="Promedio (0-10)" min="0" max="10" step="0.1" required>
+        <select id="estatus">
+          <option value="Activo" selected>Activo</option>
+          <option value="En Riesgo">En Riesgo</option>
+          <option value="Baja Temporal">Baja Temporal</option>
+        </select>
+        <button type="submit" class="btn-primary">+ Registrar Alumno</button>
+      </form>
+
+      <div class="filter-bar">
+        <input type="text" id="buscador" placeholder="🔍 Buscar por matrícula, nombre o grupo..." oninput="renderizarTabla()">
+        <select id="filtro-estatus" onchange="renderizarTabla()">
+          <option value="Todos">Todos los estatus</option>
+          <option value="Activo">Activos</option>
+          <option value="En Riesgo">En Riesgo</option>
+          <option value="Baja Temporal">Baja Temporal</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Matrícula</th>
+              <th>Nombre del Alumno</th>
+              <th>Grupo</th>
+              <th>Promedio</th>
+              <th>Estatus</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-alumnos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: ACTIVIDADES REALIZADAS EN EL CURSO -->
+    <section id="actividades" class="seccion">
+      <h1>Actividades Realizadas en el Curso</h1>
+      <p>Cronograma de ejecución bajo el marco de trabajo ágil SCRUM para <strong>AulaGestion</strong>:</p>
+      <div class="cards-grid">
+        <div class="info-card">
+          <span class="badge">Etapa 1</span>
+          <h3>Product Backlog y Roles</h3>
+          <p>Definición del Product Owner, Scrum Master y equipo de desarrollo; redacción de historias de usuario para control escolar.</p>
+        </div>
+        <div class="info-card">
+          <span class="badge">Etapa 2</span>
+          <h3>Sprint 1: Arquitectura e Interfaz</h3>
+          <p>Diseño responsivo del módulo de registro de alumnos, estructura semántica HTML5 y paleta institucional CSS3.</p>
+        </div>
+        <div class="info-card">
+          <span class="badge">Etapa 3</span>
+          <h3>Sprint 2: CRUD y Filtros Dinámicos</h3>
+          <p>Implementación de alta, baja, cambio de estatus, búsqueda en tiempo real y persistencia con <code>localStorage</code>.</p>
+        </div>
+        <div class="info-card">
+          <span class="badge">Etapa 4</span>
+          <h3>Sprint 3: Pruebas y Despliegue</h3>
+          <p>Corrección de observaciones del asesor, integración del menú de entregables y publicación en repositorio GitHub.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: REPORTE DE MODIFICACIONES -->
+    <section id="modificaciones" class="seccion">
+      <h1>Reporte de Modificaciones Realizadas</h1>
+      <p>Mejoras implementadas tras las revisiones de Sprint y retroalimentación del asesor:</p>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Módulo / Componente</th>
+              <th>Observación Detectada</th>
+              <th>Modificación Implementada</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Menú de Entregables</strong></td>
+              <td>Se requería integrar en un solo sitio el sistema y la documentación del curso.</td>
+              <td>Se creó una barra superior dinámica con acceso a Sistema, Actividades, Reporte y Código.</td>
+              <td><span class="status-ok">Completado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Validación de Matrícula y Notas</strong></td>
+              <td>Permitía duplicar matrículas o ingresar promedios fuera del rango 0-10.</td>
+              <td>Se añadió validación de matrícula única y restricción numérica estricta (0.0 a 10.0).</td>
+              <td><span class="status-ok">Completado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Búsqueda y Filtrado</strong></td>
+              <td>Dificultad para localizar alumnos en grupos numerosos.</td>
+              <td>Se integró buscador instantáneo por nombre/matrícula y filtro por estatus académico.</td>
+              <td><span class="status-ok">Completado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Persistencia Local</strong></td>
+              <td>Los registros desaparecían al recargar el navegador.</td>
+              <td>Se implementó almacenamiento automático mediante <code>localStorage</code>.</td>
+              <td><span class="status-ok">Completado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 4: CÓDIGO FUENTE -->
+    <section id="codigo" class="seccion">
+      <h1>Código Fuente y Empaquetado (.ZIP)</h1>
+      <div class="info-card">
+        <h3>📦 Estructura del Proyecto AulaGestion</h3>
+        <p>El sistema está construido con tecnologías web estándar sin dependencias externas pesadas:</p>
+        <pre class="code-box">
+aulagestion-scrum.zip
+├── index.html      # Interfaz principal de AulaGestion y menú de entregables
+├── styles.css      # Estilos responsivos, tabla de alumnos y estados visuales
+├── app.js          # Lógica CRUD, validación de matrículas, filtros y localStorage
+└── README.md       # Documentación técnica del repositorio en GitHub
+        </pre>
+        <p><strong>Repositorio GitHub:</strong> Disponible para descarga directa desde <em>Code > Download ZIP</em> o clonación vía Git.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
